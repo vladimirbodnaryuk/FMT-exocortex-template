@@ -1,10 +1,95 @@
-# Протокол Close (Закрытие сессии)
+# Протокол Close (ОРЗ-фрактал)
 
-> **Триггер:** «закрываю сессию», «всё», «закрывай», или РП завершён.
+> **Два масштаба:** День и Сессия. Триггер определяет масштаб.
 > **Источник:** CLAUDE.md § 2 (slim) → этот файл.
-> **«Закрывай» = push сразу без вопросов** (пользователь дал согласие словом).
 
 ---
+
+## § Масштаб: День (Day Close)
+
+> **Триггер:** «закрываю день» / «итоги дня»
+> **Роль:** R1 Стратег
+> **Формат:** Стратег собирает данные → показывает черновик → пользователь одобряет → Стратег записывает в DayPlan
+
+### Алгоритм Day Close
+
+#### 1. Сбор данных
+
+```bash
+for repo in $(ls ~/IWE/); do
+  if [ -d ~/IWE/$repo/.git ]; then
+    commits=$(git -C ~/IWE/$repo log --since="today 00:00" --oneline --no-merges 2>/dev/null)
+    [ -n "$commits" ] && echo "=== $repo ===" && echo "$commits"
+  fi
+done
+```
+
+Сопоставить коммиты с таблицей «На сегодня» из DayPlan → определить статусы: done / partial / not started.
+
+#### 2. Черновик итогов (показать пользователю)
+
+Стратег формирует и выводит на экран:
+
+**а) Обзор:** таблица «что сделано» (РП × статус)
+
+**б) Что нового узнал:** Стратег подсвечивает новые знания за день:
+- Captures, записанные в Pack
+- Различения, добавленные в hard-distinctions
+- Инсайты из сессий (архитектурные решения, паттерны)
+- Новое из руководства / курса (если был слот саморазвития)
+
+> Это экзоскелет: агент помогает увидеть, пользователь рефлексирует сам.
+
+**в) Похвала:** Стратег предлагает формулировку — что получилось, что было непросто но сделано. Пользователь корректирует.
+
+**г) Не забыто?** Стратег проверяет:
+- Незакоммиченные изменения (`git status` по всем репо)
+- Незаписанные мысли? (спросить пользователя)
+- Обещания кому-то? (спросить пользователя)
+
+**д) Задел на завтра:** Стратег предлагает — с чего начать утром, какой контекст подготовить.
+
+#### 3. Согласование
+
+Пользователь читает черновик → корректирует → одобряет.
+
+#### 4. Запись
+
+- Дописать секцию «Итоги дня» в текущий `DayPlan YYYY-MM-DD.md`:
+
+```markdown
+---
+
+## Итоги дня
+
+| РП | Что сделано | Статус |
+|----|-------------|--------|
+| #N | ... | done / partial |
+
+**Коммиты:** N в M репо
+
+**Что нового узнал:** ...
+
+**Похвала:** ...
+
+**Не забыто:** всё чисто / [что осталось]
+
+**Завтра начать с:** ...
+
+*Закрыто: YYYY-MM-DD HH:MM*
+```
+
+- Обновить статусы РП в WeekPlan + MEMORY.md
+- Backup: `memory/ + CLAUDE.md → DS-my-strategy/exocortex/`
+- Закоммитить DS-my-strategy
+
+---
+
+## § Масштаб: Сессия (Session Close)
+
+> **Триггер:** «закрываю сессию», «всё», «закрывай», или РП завершён.
+> **Роль:** R6 Кодировщик
+> **«Закрывай» = push сразу без вопросов** (пользователь дал согласие словом).
 
 ## Exit Protocol (ОБЯЗАТЕЛЬНО при завершении каждой роли)
 
@@ -27,7 +112,7 @@
    - Классифицировать → маршрутизировать → формализовать → валидировать
    - Показать Extraction Report → получить одобрение
    - Применить одобренные (accept → Pack/CLAUDE.md/memory)
-2. Обновить MEMORY.md (статус РП) + `DS-my-strategy/docs/WP-REGISTRY.md` (если статус РП изменился)
+2. Обновить MEMORY.md (статус РП) + **WP-REGISTRY.md** (`DS-my-strategy/docs/WP-REGISTRY.md`): обновить статус РП, дату. Если новые РП создавались в Open — проверить, что они уже в реестре
 3. Зафиксировать: что сделано, что осталось
 4. Закоммитить (с подтверждением)
 5. Обновить `DS-my-strategy/current/Plan W{N}...` (статусы РП)
@@ -75,9 +160,10 @@
 
 ## Чеклист Close
 
-- [ ] **Session log:** удалить строку этой сессии из `DS-strategy/inbox/open-sessions.log`
+- [ ] **Session log:** удалить строку этой сессии из `DS-my-strategy/inbox/open-sessions.log`
 - [ ] Все изменения закоммичены и запушены
 - [ ] MEMORY.md обновлён (статусы РП)
+- [ ] WP-REGISTRY.md обновлён (статусы + новые РП)
 - [ ] DS-my-strategy/current/Plan обновлён
 - [ ] Captures применены
 - [ ] **Selective Reindex:** Pack изменены? → `selective-reindex.sh`
@@ -102,7 +188,8 @@
 
 | Протокол | Роль-владелец | Где описан |
 |----------|---------------|-----------|
-| Open, Work, Close | R6 Кодировщик | CLAUDE.md + protocol-*.md |
+| Open, Work, Close (§ День) | R1 Стратег | protocol-*.md § День |
+| Open, Work, Close (§ Сессия) | R6 Кодировщик | protocol-*.md § Сессия |
 | Session-Close Extraction | R2 Экстрактор | extractor/prompts/session-close.md |
 | On-Demand Extraction | R2 Экстрактор | extractor/prompts/on-demand.md |
 | Bulk Extraction | R2 Экстрактор | extractor/prompts/bulk-extraction.md |
@@ -112,7 +199,7 @@
 | Ontology Sync | R2 Экстрактор | extractor/prompts/ontology-sync.md |
 | Session-Prep | R1 Стратег | strategist/prompts/session-prep.md |
 | Strategy-Session | R1 Стратег | strategist/prompts/strategy-session.md |
-| Day-Plan | R1 Стратег | strategist/prompts/day-plan.md |
+| Day-Plan | R1 Стратег | protocol-open.md § День (deprecated: strategist/prompts/day-plan.md) |
 | Note-Review | R1 Стратег | strategist/prompts/note-review.md |
-| Day-Close | R1 Стратег | strategist/prompts/day-close.md |
+| Day-Close | R1 Стратег | protocol-close.md § День (deprecated: strategist/prompts/day-close.md) |
 | Week-Review | R1 Стратег | strategist/prompts/week-review.md |

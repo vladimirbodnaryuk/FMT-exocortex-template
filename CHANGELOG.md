@@ -40,7 +40,7 @@ Versioning: [Semantic Versioning](https://semver.org/).
 ## [0.3.0] — 2026-02-16
 
 ### Added
-- **LEARNING-PATH.md** — полный путь изучения экзокортекса (T1→T5)
+- **LEARNING-PATH.md** — полный путь изучения экзокортекса (T0→T4 + TM/TA/TD)
 - **update.sh** — обновление шаблона из upstream (fetch + merge + reinstall)
 - **SETUP-GUIDE.md** — пошаговое руководство установки
 - **IWE-HELP.md** — быстрый справочник
