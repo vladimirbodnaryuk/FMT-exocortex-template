@@ -3,24 +3,24 @@
 > **Триггер:** Ручной — по запросу пользователя (`./scripts/strategist.sh day-close`).
 > Отдельный файл отчёта НЕ создаётся. Итоги дня войдут в DayPlan следующего утра.
 
-Источник сценария: /mnt/d/Git/CLAUDE.md → Протокол Day-Close
+Источник сценария: /Users/admin/GIT/CLAUDE.md → Протокол Day-Close
 
 ## Контекст
 
-- **WeekPlan:** /mnt/d/Git/DS-strategy/current/WeekPlan W*.md (последний по дате)
-- **MEMORY:** ~/.claude/projects/-mnt-d-Git/memory/MEMORY.md
-- **Exocortex backup:** /mnt/d/Git/DS-strategy/exocortex/
+- **WeekPlan:** /Users/admin/GIT/DS-strategy/current/WeekPlan W*.md (последний по дате)
+- **MEMORY:** ~/.claude/projects/-Users-admin-GIT/memory/MEMORY.md
+- **Exocortex backup:** /Users/admin/GIT/DS-strategy/exocortex/
 
 ## Алгоритм
 
 ### 1. Сбор коммитов за сегодня
 
 ```bash
-# Для КАЖДОГО репо в /mnt/d/Git/:
-git -C /mnt/d/Git/<repo> log --since="today 00:00" --oneline --no-merges
+# Для КАЖДОГО репо в /Users/admin/GIT/:
+git -C /Users/admin/GIT/<repo> log --since="today 00:00" --oneline --no-merges
 ```
 
-- Пройди по ВСЕМ репозиториям в `/mnt/d/Git/`
+- Пройди по ВСЕМ репозиториям в `/Users/admin/GIT/`
 - Сгруппируй коммиты по репозиториям
 - Сопоставь с РП из недельного плана
 - Определи статус каждого затронутого РП: done / partial / not started
@@ -44,15 +44,15 @@ git -C /mnt/d/Git/<repo> log --since="today 00:00" --oneline --no-merges
 
 ### 4. Backup экзокортекса
 
-Скопируй актуальные файлы в `/mnt/d/Git/DS-strategy/exocortex/`:
+Скопируй актуальные файлы в `/Users/admin/GIT/DS-strategy/exocortex/`:
 
 ```bash
 # Корневой CLAUDE.md
-cp /mnt/d/Git/CLAUDE.md /mnt/d/Git/DS-strategy/exocortex/CLAUDE.md
+cp /Users/admin/GIT/CLAUDE.md /Users/admin/GIT/DS-strategy/exocortex/CLAUDE.md
 
 # Memory (Слой 3)
-cp ~/.claude/projects/-mnt-d-Git/memory/MEMORY.md /mnt/d/Git/DS-strategy/exocortex/MEMORY.md
-cp ~/.claude/projects/-mnt-d-Git/memory/*.md /mnt/d/Git/DS-strategy/exocortex/
+cp ~/.claude/projects/-Users-admin-GIT/memory/MEMORY.md /Users/admin/GIT/DS-strategy/exocortex/MEMORY.md
+cp ~/.claude/projects/-Users-admin-GIT/memory/*.md /Users/admin/GIT/DS-strategy/exocortex/
 ```
 
 ### 5. Закоммитить

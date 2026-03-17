@@ -4,12 +4,12 @@
 
 ## Контекст
 
-- **HUB (личные планы):** /mnt/d/Git/DS-strategy/current/
-- **Документы стратегии:** /mnt/d/Git/DS-strategy/docs/ (ВСЕ файлы: Strategy.md, Dissatisfactions.md, Session Agenda.md)
-- **Inbox:** /mnt/d/Git/DS-strategy/inbox/ ([fleeting-notes.md](https://github.com/your-username/DS-strategy/blob/main/inbox/fleeting-notes.md) + свежие файлы за неделю)
-- **SPOKE (планы репо):** /mnt/d/Git/*/WORKPLAN.md
-- **Стратегические карты:** /mnt/d/Git/*/MAPSTRATEGIC.md (если есть в репо)
-- **MEMORY:** ~/.claude/projects/-mnt-d-Git/memory/MEMORY.md
+- **HUB (личные планы):** /Users/admin/GIT/DS-strategy/current/
+- **Документы стратегии:** /Users/admin/GIT/DS-strategy/docs/ (ВСЕ файлы: Strategy.md, Dissatisfactions.md, Session Agenda.md)
+- **Inbox:** /Users/admin/GIT/DS-strategy/inbox/ ([fleeting-notes.md](https://github.com/vladimirbodnaryuk/DS-strategy/blob/main/inbox/fleeting-notes.md) + свежие файлы за неделю)
+- **SPOKE (планы репо):** /Users/admin/GIT/*/WORKPLAN.md
+- **Стратегические карты:** /Users/admin/GIT/*/MAPSTRATEGIC.md (если есть в репо)
+- **MEMORY:** ~/.claude/projects/-Users-admin-GIT/memory/MEMORY.md
 
 ## Именование файлов в current/
 
@@ -76,7 +76,7 @@ DS-strategy/
 #### 4. Сверка со стратегией + агрегация MAPSTRATEGIC (→ блок «Стратегическая сверка»)
 
 - Прочитай `DS-strategy/docs/Strategy.md` — фокусы года, Q1 цели, приоритеты месяца
-- Прочитай `/mnt/d/Git/*/MAPSTRATEGIC.md` (если файл есть в репо)
+- Прочитай `/Users/admin/GIT/*/MAPSTRATEGIC.md` (если файл есть в репо)
 - **MCP-контекст:** `knowledge-mcp search("текущий фокус обучения", source_type="guides")` → рекомендации по руководствам для плана недели
 - **Агрегируй** фазы из MAPSTRATEGIC.md → обнови секцию «Текущие фазы (MAPSTRATEGIC)» в Strategy.md
 - Обнови «Приоритеты месяца» — статусы на основе WeekReport
@@ -85,7 +85,7 @@ DS-strategy/
 
 #### 5. Обход WORKPLAN.md (Hub-and-Spoke)
 
-- Прочитай `/mnt/d/Git/*/WORKPLAN.md` из каждого репо
+- Прочитай `/Users/admin/GIT/*/WORKPLAN.md` из каждого репо
 - Собери все РП со статусом pending/in-progress
 - Выяви расхождения с HUB-планом
 

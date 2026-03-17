@@ -4,11 +4,11 @@
 
 ## Контекст
 
-- **HUB (личные планы):** /mnt/d/Git/DS-strategy/current/
-- **Документы стратегии:** /mnt/d/Git/DS-strategy/docs/ (Strategy.md, Dissatisfactions.md, Session Agenda.md)
-- **Inbox:** /mnt/d/Git/DS-strategy/inbox/
-- **SPOKE (планы репо):** /mnt/d/Git/*/WORKPLAN.md
-- **MEMORY:** ~/.claude/projects/-mnt-d-Git/memory/MEMORY.md
+- **HUB (личные планы):** /Users/admin/GIT/DS-strategy/current/
+- **Документы стратегии:** /Users/admin/GIT/DS-strategy/docs/ (Strategy.md, Dissatisfactions.md, Session Agenda.md)
+- **Inbox:** /Users/admin/GIT/DS-strategy/inbox/
+- **SPOKE (планы репо):** /Users/admin/GIT/*/WORKPLAN.md
+- **MEMORY:** ~/.claude/projects/-Users-admin-GIT/memory/MEMORY.md
 
 ## Предусловие
 

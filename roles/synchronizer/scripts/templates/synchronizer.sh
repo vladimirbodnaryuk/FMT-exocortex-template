@@ -2,7 +2,7 @@
 # Шаблон уведомлений: Синхронизатор (R8)
 # Вызывается из notify.sh через source
 
-LOG_DIR="/home/vb/logs/synchronizer"
+LOG_DIR="/Users/admin/logs/synchronizer"
 DATE=$(date +%Y-%m-%d)
 
 build_message() {

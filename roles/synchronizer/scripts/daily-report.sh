@@ -12,8 +12,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 STATE_DIR="$HOME/.local/state/exocortex"
-LOG_DIR="/home/vb/logs/synchronizer"
-STRATEGY_DIR="/mnt/d/Git/DS-strategy"
+LOG_DIR="/Users/admin/logs/synchronizer"
+STRATEGY_DIR="/Users/admin/GIT/DS-strategy"
 REPORT_DIR="$STRATEGY_DIR/current"
 ARCHIVE_DIR="$STRATEGY_DIR/archive/scheduler-reports"
 
@@ -27,7 +27,7 @@ DRY_RUN=false
 
 REPORT_FILE="$REPORT_DIR/SchedulerReport $DATE.md"
 SCHEDULER_LOG="$LOG_DIR/scheduler-$DATE.log"
-STRATEGIST_LOG="/home/vb/logs/strategist/$DATE.log"
+STRATEGIST_LOG="/Users/admin/logs/strategist/$DATE.log"
 
 mkdir -p "$ARCHIVE_DIR"
 
@@ -211,7 +211,7 @@ $warnings
 **Что делать:**
 "
         if echo "$warnings" | grep -q "push failed" 2>/dev/null; then
-            report+="- **push failed:** Mac был оффлайн. Запусти \`cd /mnt/d/Git/DS-strategy && git pull --rebase && git push\`
+            report+="- **push failed:** Mac был оффлайн. Запусти \`cd /Users/admin/GIT/DS-strategy && git pull --rebase && git push\`
 "
         fi
     else

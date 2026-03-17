@@ -2,8 +2,8 @@
 # Шаблон уведомлений: Стратег (R1)
 # Вызывается из notify.sh через source
 
-STRATEGY_DIR="/mnt/d/Git/DS-strategy/current"
-STRATEGY_REPO_DIR="/mnt/d/Git/DS-strategy"
+STRATEGY_DIR="/Users/admin/GIT/DS-strategy/current"
+STRATEGY_REPO_DIR="/Users/admin/GIT/DS-strategy"
 DATE=$(date +%Y-%m-%d)
 
 find_strategy_file() {

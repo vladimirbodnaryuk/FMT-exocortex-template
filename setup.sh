@@ -122,7 +122,7 @@ fi
 
 # === Collect configuration ===
 read -p "GitHub username (или Enter для пропуска): " GITHUB_USER
-GITHUB_USER="${GITHUB_USER:-your-username}"
+GITHUB_USER="${GITHUB_USER:-vladimirbodnaryuk}"
 
 read -p "Workspace directory [$(dirname "$TEMPLATE_DIR")]: " WORKSPACE_DIR
 WORKSPACE_DIR="${WORKSPACE_DIR:-$(dirname "$TEMPLATE_DIR")}"
@@ -133,7 +133,7 @@ if $CORE_ONLY; then
     # Core: используем defaults, не спрашиваем Claude-специфичные параметры
     CLAUDE_PATH="${AI_CLI:-claude}"
     TIMEZONE_HOUR="4"
-    TIMEZONE_DESC="4:00 UTC"
+    TIMEZONE_DESC="7:00 MSK"
 else
     read -p "Claude CLI path [$(command -v claude || echo '/opt/homebrew/bin/claude')]: " CLAUDE_PATH
     CLAUDE_PATH="${CLAUDE_PATH:-$(command -v claude || echo '/opt/homebrew/bin/claude')}"
@@ -191,13 +191,13 @@ echo "[1/6] Configuring placeholders..."
 
 find "$TEMPLATE_DIR" -type f \( -name "*.md" -o -name "*.json" -o -name "*.sh" -o -name "*.plist" -o -name "*.yaml" -o -name "*.yml" \) | while read file; do
     sed -i '' \
-        -e "s|your-username|$GITHUB_USER|g" \
-        -e "s|/mnt/d/Git|$WORKSPACE_DIR|g" \
-        -e "s|/usr/bin/claude|$CLAUDE_PATH|g" \
-        -e "s|-mnt-d-Git|$CLAUDE_PROJECT_SLUG|g" \
+        -e "s|vladimirbodnaryuk|$GITHUB_USER|g" \
+        -e "s|/Users/admin/GIT|$WORKSPACE_DIR|g" \
+        -e "s|/opt/homebrew/bin/claude|$CLAUDE_PATH|g" \
+        -e "s|-Users-admin-GIT|$CLAUDE_PROJECT_SLUG|g" \
         -e "s|4|$TIMEZONE_HOUR|g" \
-        -e "s|4:00 UTC|$TIMEZONE_DESC|g" \
-        -e "s|/home/vb|$HOME_DIR|g" \
+        -e "s|7:00 MSK|$TIMEZONE_DESC|g" \
+        -e "s|/Users/admin|$HOME_DIR|g" \
         "$file"
 done
 

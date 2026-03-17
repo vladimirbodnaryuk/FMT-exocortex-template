@@ -14,8 +14,8 @@
 ## Конфигурация
 
 > Перед обработкой прочитай:
-> 1. `/mnt/d/Git/FMT-exocortex-template/roles/extractor/config/routing.md` — таблицы маршрутизации
-> 2. `/mnt/d/Git/FMT-exocortex-template/roles/extractor/config/feedback-log.md` — лог отклонённых кандидатов
+> 1. `/Users/admin/GIT/FMT-exocortex-template/roles/extractor/config/routing.md` — таблицы маршрутизации
+> 2. `/Users/admin/GIT/FMT-exocortex-template/roles/extractor/config/feedback-log.md` — лог отклонённых кандидатов
 
 ## Алгоритм
 
