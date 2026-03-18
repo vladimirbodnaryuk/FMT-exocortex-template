@@ -39,6 +39,7 @@
 | PACK-education | Методика обучения |
 | PACK-personal | Личностное развитие |
 | PACK-verification | Верификация и приёмка (трансдоменный) |
+| PACK-finance | Финансы: банкинг, карты, транзакции, дилинг | `/Users/admin/GIT/PACK-finance/` |
 
 ## Ключевые документы (Pack DP)
 
