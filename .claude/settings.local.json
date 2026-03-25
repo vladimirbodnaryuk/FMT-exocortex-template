@@ -29,7 +29,19 @@
       "mcp__knowledge-mcp__list_sources",
       "mcp__ddt__describe_by_path",
       "mcp__ddt__read_digital_twin",
-      "mcp__ddt__write_digital_twin"
+      "mcp__ddt__write_digital_twin",
+      "Bash(~/.wakatime.cfg:*)",
+      "Read(//Users/admin/**)",
+      "Bash(mkdir -p ~/.claude/hooks)",
+      "Bash(cp /Users/admin/GIT/FMT-exocortex-template/.claude/hooks/wakatime-heartbeat.sh ~/.claude/hooks/wakatime-heartbeat.sh)",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(~/.claude/hooks/wakatime-heartbeat.sh)",
+      "Bash(~/.wakatime/wakatime-cli --today)",
+      "Bash(git clone:*)",
+      "Bash(bash update.sh --dry-run)",
+      "Bash(bash update.sh)",
+      "Bash(git push:*)"
     ]
   },
   "mcpServers": {
