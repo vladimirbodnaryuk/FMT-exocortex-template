@@ -276,7 +276,12 @@ if [ "$EXOCORTEX_REPO" != "$CURRENT_DIR_NAME" ]; then
     else
         # Replace references in all text files
         find "$TEMPLATE_DIR" -type f \( -name "*.md" -o -name "*.json" -o -name "*.sh" -o -name "*.plist" -o -name "*.yaml" -o -name "*.yml" \) | while read file; do
-            sed_inplace "s|$CURRENT_DIR_NAME|$EXOCORTEX_REPO|g" "$file"
+            # Skip lines marked UPSTREAM-CONST (e.g., upstream repo URL in update.sh)
+            if grep -q 'UPSTREAM-CONST' "$file" 2>/dev/null; then
+                sed_inplace "/UPSTREAM-CONST/!s|$CURRENT_DIR_NAME|$EXOCORTEX_REPO|g" "$file"
+            else
+                sed_inplace "s|$CURRENT_DIR_NAME|$EXOCORTEX_REPO|g" "$file"
+            fi
         done
 
         # Rename GitHub repo (if gh is available and not core mode)
@@ -340,7 +345,7 @@ else
         else
             echo "  WARN: settings.local.json not found in template."
         fi
-        echo "  [DRY RUN] Would register MCP servers: knowledge-mcp, ddt"
+        echo "  [DRY RUN] Would show MCP setup instructions (claude.ai/settings/connectors)"
     else
         mkdir -p "$WORKSPACE_DIR/.claude"
         if [ -f "$TEMPLATE_DIR/.claude/settings.local.json" ]; then
@@ -350,15 +355,15 @@ else
             echo "  WARN: settings.local.json not found in template, skipping."
         fi
 
-        # Register MCP servers via CLI (Claude Code requires `claude mcp add`, not just JSON config)
-        echo "  Adding MCP servers..."
-        cd "$WORKSPACE_DIR"
-        claude mcp add --transport http --scope project knowledge-mcp "https://knowledge-mcp.aisystant.workers.dev/mcp" 2>/dev/null && \
-            echo "  ✓ knowledge-mcp added" || \
-            echo "  ○ knowledge-mcp: add manually: claude mcp add --transport http knowledge-mcp https://knowledge-mcp.aisystant.workers.dev/mcp"
-        claude mcp add --transport http --scope project ddt "https://digital-twin-mcp.aisystant.workers.dev/mcp" 2>/dev/null && \
-            echo "  ✓ ddt added" || \
-            echo "  ○ ddt: add manually: claude mcp add --transport http ddt https://digital-twin-mcp.aisystant.workers.dev/mcp"
+        # MCP servers are managed through claude.ai connectors (not local CLI)
+        echo "  MCP серверы подключаются через claude.ai:"
+        echo ""
+        echo "  1. Откройте https://claude.ai/settings/connectors"
+        echo "  2. Добавьте: https://knowledge-mcp.aisystant.workers.dev/mcp"
+        echo "  3. Добавьте: https://digital-twin-mcp.aisystant.workers.dev/mcp"
+        echo "  4. Перезапустите Claude Code"
+        echo ""
+        echo "  После подключения проверьте командой /mcp в Claude Code."
     fi
 fi
 

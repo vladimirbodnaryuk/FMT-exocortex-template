@@ -99,7 +99,7 @@ FMT-exocortex-template/              DS-strategy/ (отдельный репо)
 FMT-exocortex-template/              DS-strategy/ (отдельный репо)
   roles/strategist/                     current/
     prompts/                              WeekPlan W{N}.md
-      add-wp.md                           WeekReport W{N}.md
+      add-wp.md                           ~~WeekReport W{N}.md~~ (deprecated → секция «Итоги W{N}» в WeekPlan)
       check-plan.md                       DayPlan YYYY-MM-DD.md
       evening.md                        docs/
     scripts/                              Strategy.md

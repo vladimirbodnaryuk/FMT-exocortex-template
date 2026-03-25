@@ -5,6 +5,188 @@ All notable changes to FMT-exocortex-template will be documented in this file.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning: [Semantic Versioning](https://semver.org/).
 
+## [0.16.2] — 2026-03-25
+
+### Changed
+- **skill /iwe-rules-review** — 3 вопроса → 4 вопроса (по актуальному DP.M.008: чему научился? какое правило мешало? какого не хватало? какое обходил?)
+
+## [0.16.1] — 2026-03-25
+
+### Changed
+- **skill /archgate** — L2.1 Переносимость данных добавлена, L2.2–L2.7 перенумерованы (7 доменных характеристик). АрхГейт 8.0+ (WP-177)
+
+## [0.16.0] — 2026-03-25
+
+### Changed
+- **WeekReport deprecated** — итоги недели теперь записываются в секцию «Итоги W{N}» внутри WeekPlan. Отдельный файл WeekReport больше не создаётся. АрхГейт 8.9 (62/70)
+- **week-review.md** — пишет секцию в WeekPlan, не создаёт файл
+- **session-prep.md** — читает секцию из WeekPlan, не ищет файл WeekReport
+
+### Added
+- **Кроссплатформенное предотвращение сна** — `strategist.sh` и `scheduler.sh` автоматически блокируют засыпание: macOS `caffeinate -diu` / Linux `systemd-inhibit`. Флаг `-s` не используется — он игнорируется когда Optimized Battery Charging переключает профиль на батарею
+- **SETUP-GUIDE: инструкции wake+sleep** для macOS, Linux, Windows. Включая `pmset -b sleep 0` для ноутбуков и Charge Limit рекомендацию
+- **PLATFORM-COMPAT: sleep prevention** — документация кроссплатформенных ограничений
+- **Agent Workspace (optional, WP-176)** — `setup/optional/setup-agent-workspace.sh` создаёт отдельный репо для данных агентов. SETUP-GUIDE Этап 7 с осознанным описанием когда нужен/не нужен
+- **daily-report.sh conditional** — если DS-agent-workspace/.git существует → отчёты туда, иначе DS-strategy/current/ (обратная совместимость)
+
+### Updated
+- **LEARNING-PATH §11 FAQ** — 3 развёрнутых ответа (Windows+WSL, заметки, бот отвечает не то) + 6 табличных строк (WP-166: feedback_triage кластеры)
+- docs/LEARNING-PATH, USE-CASES, SETUP-GUIDE, onboarding-guide — убран WeekReport
+- roles/strategist/README, seed/strategy/CLAUDE.md — WeekReport помечен deprecated
+- synchronizer/scripts/templates/strategist.sh — ищет WeekPlan вместо WeekReport
+- README.md FAQ — обновлён вопрос про сон/выключение
+- install.sh — кроссплатформенные подсказки при установке
+- session-prep.md, note-review.md — ссылки на QA-отчёт: agent-workspace или DS-strategy
+- collectors.d/README.md — unsatisfied → agent-workspace path
+
+## [0.15.2] — 2026-03-24
+
+### Changed
+- **«Правила IWE» → «Культура работы IWE»** — переименование в skill /iwe-rules-review и шаблоне отчёта (согласование с DP.M.008)
+
+## [0.15.1] — 2026-03-24
+
+### Fixed
+- **Битые ссылки** — исправлено 17 ссылок в 6 файлах: кросс-репо `../../../../PACK-digital-platform/` → абсолютные GitHub URL в onboarding-guide, `LEARNING-PATH.md`/`SETUP-GUIDE.md` → `docs/` в CHANGELOG, лишний `../` в LEARNING-PATH, `Github/` в protocol-work, недостаточная глубина `../` в week-review и setup/optional/README
+
+## [0.15.0] — 2026-03-24
+
+### Changed
+- **Context Compression (WP-172)** — входной overhead снижен с ~27K до ~13K токенов (2x сжатие). АрхГейт 8.9
+- **CLAUDE.md** — сжат до ~90 строк ядра (было ~280). Убраны детали, дублирующие memory/ и .claude/rules/
+- **protocol-open.md** — шаблоны DayPlan/WeekPlan вынесены в skill `/day-open` (lazy loading, ~8K экономия в обычных сессиях)
+
+### Added
+- **skill `/day-open`** — `.claude/skills/day-open/SKILL.md`: шаблоны DayPlan, WeekPlan, compact dashboard. Загружаются только при Day Open
+- **Lesson Hygiene** в protocol-close.md (Day Close §3b) — симметрия: Open пишет уроки → Close чистит. Предотвращает раздувание MEMORY.md. Цель: ≤8 уроков
+- **validate-template.sh** — проверка `.claude/skills/day-open/SKILL.md`
+- **skill `/iwe-rules-review`** — еженедельное ревью культуры работы IWE (DP.M.008 #14). Триггер: Week Close
+- **HD #43** — различение «Правило ≠ Реализация правила» (DP.M.008)
+
+## [0.14.2] — 2026-03-24
+
+### Changed
+- **protocol-open.md § Ритуал (Шаг 1)** — каждый элемент отчёта с новой строки (было: всё в одну строку)
+- **LEARNING-PATH.md § Ритуал** — аналогичное форматирование
+
+## [0.14.1] — 2026-03-24
+
+### Changed
+- **wp-gate-reminder.sh** — при Day Open триггере инжектит реальную дату через `date` (currentDate от Anthropic может врать из-за timezone). На остальные сообщения — стандартный WP Gate reminder
+
+## [0.14.0] — 2026-03-24
+
+### Added
+- **dt-collect.sh plugin-архитектура** — ядро (L3) содержит 11 стандартных коллекторов, `collectors.d/*.sh` — точка расширения для персональных (L4) коллекторов. Plugin loader автоматически source'ит файлы и route'ит JSON по TARGET-секциям
+- **collectors.d/README.md** — документация формата плагинов (COLLECTOR/TARGET headers, формат функций)
+- **6 новых коллекторов в ядре** — multiplier (DayPlan budget), WP-REGISTRY stats, Pack entities, fleeting notes, scheduler reports health
+- **2 новых JSONB-секции** — `2_8_ecosystem`, `2_9_knowledge` (через плагины)
+- **portable_date_offset** — кроссплатформенная обёртка для `date -v` (macOS + Linux)
+
+## [0.13.5] — 2026-03-22
+
+### Changed
+- **protocol-close.md** — формула мультипликатора: partial РП считаются (% × бюджет), мелкие РП = 0.25h (не 0). Недельный мультипликатор = Σ бюджетов ВСЕХ отработанных РП / WakaTime. Убран плановый бюджет из формулы
+- **hard-distinctions** — HD #42: Тир ≠ Квалификация (DP.D.042)
+
+## [0.13.4] — 2026-03-22
+
+### Added
+- **Priority Gate** — новый Pre-action Gate в CLAUDE.md: при создании РП ≥3h обязательный вопрос «К какому результату месяца?» (R{N} / поддержка / off-plan)
+- **wp-new SKILL** — 5-е место записи: маппинг РП → Результат в `Strategy.md`. Порог ≥3h
+- **Strategy template** — секции «Результаты месяца» и «РП → Результаты» с пояснениями допустимых значений
+
+## [0.13.3] — 2026-03-21
+
+### Fixed
+- **MCP подключение** — `setup.sh` использовал нерабочий `claude mcp add --transport http` → заменён на инструкцию через claude.ai/settings/connectors. Обновлены: SETUP-GUIDE §1.3b, IWE-HELP, LEARNING-PATH, validate-template.yml, update.sh (6 файлов)
+
+## [0.13.2] — 2026-03-21
+
+### Changed
+- **cloud-scheduler.yml** — расширенный IWE Health Check: мульти-репо коммиты (24ч + 7д), проверка свежести backup (>48ч), статус бота (health endpoint), WP-статистика, светофор (🟢/🟡/🔴). Настройка через GitHub Variables: `HEALTH_CHECK_REPOS`, `BOT_HEALTH_URL`
+- **LEARNING-PATH §2.6** — практический гайд настройки расширенного Health Check (4 шага)
+
+### Fixed
+- **cloud-scheduler.yml** — защита от пустого `STRATEGY_REPO` при `basename`, точный grep для WP-статистики (`| in_progress` вместо `in_progress`)
+
+## [0.13.1] — 2026-03-21
+
+### Fixed
+- **inbox-check.md** — `[processed]` → `[analyzed]`: метка при анализе captures, не при записи в Pack. Корневая причина потери 76% captures
+- **session-close.md** — добавлен шаг 8a: пометка captures `[processed]` только после подтверждённой записи в Pack
+- **extractor.sh** — учёт `[analyzed]` в подсчёте pending captures
+- **session-prep.md** — архивация `[processed]` captures в `archive/captures/` вместо удаления
+
+## [0.13.0] — 2026-03-20
+
+### Added
+- **generate-post-image.py** (S48) — генерация обложек для постов через OpenAI GPT Image 1 API. SOTA-промпт: полный текст статьи → визуальная метафора. Настроение по аудитории (wide/community/advanced). ~$0.07/картинка
+- **COVER-IMAGES.md** — подробная инструкция: API key, промпты, параметры, стоимость, интеграция с публикаторами
+
+## [0.12.0] — 2026-03-20
+
+### Added
+- **cloud-scheduler.yml** — GitHub Actions workflow для облачной автоматики IWE. Базовый уровень (без LLM, $0/мес): backup memory → exocortex, health check ночной автоматики, опциональные Telegram-уведомления. DP.SC.019, S61
+- **setup-cloud-scheduler.sh** — скрипт настройки: проверка gh CLI, установка GitHub Secrets, тестовый запуск workflow
+- **LEARNING-PATH §2.6** — Cloud Scheduler добавлен в таблицу опциональных сервисов
+- **README FAQ** — вопрос про работу IWE при выключенном Mac
+
+### Changed
+- **CLAUDE.md** — 3-слойная структура: L1 (§1-§7 платформа), L2 (§8 staging), L3 (§9 авторское). `update.sh` обновляет только L1. UC Gate добавлен в Pre-action Gates
+- **cloud-scheduler Telegram** — HTML-формат вместо markdown (корректное отображение bold)
+
+## [0.11.1] — 2026-03-20
+
+### Changed
+- **Haiku R23 верификатор в Quick Close** — закрытие сессии теперь запускает sub-agent Haiku R23 с context isolation (VR.SOTA.002). Шаг 7 в алгоритме Quick Close. Исключения: сессия ≤15 мин, сессия без изменений файлов
+- **roles/verifier/README.md** — таблица «Когда вызывается» уточнена: Quick Close (шаг 7) + Day Close (шаг 10) + Session Close (Verification Gate)
+- **CLAUDE.md правило 6** — обновлено: Quick Close + Day Close через Haiku R23
+
+## [0.11.0] — 2026-03-20
+
+### Changed
+- **update.sh v2.0.0** — полностью переписан: curl + манифест вместо git merge. Работает с template repos (created via "Use this template"), которые не имеют общей git-истории с upstream. Self-update (bootstrap): скрипт обновляет сам себя перед работой
+- **Превью перед обновлением** — показывает новые файлы, обновлённые, не затрагиваемые. Пользователь решает: применить или отменить
+- **setup-calendar.sh** — уточнён текст предупреждения Google (название «IWE MIM», пояснение про unverified app)
+
+### Added
+- **[update-manifest.json](update-manifest.json)** — манифест всех платформенных файлов (100+ записей) с описаниями. Используется update.sh для доставки обновлений
+- **[DP.SC.019](../PACK-digital-platform/pack/digital-platform/08-use-cases/DP.SC.019-template-update.md)** — сценарий «Обновление экзокортекса» + сервис S50 Template Update в MAP.002
+- **Инструкция «настрой календарь»** в CLAUDE.md — при запросе пользователя Claude запускает `setup-calendar.sh`
+
+## [0.10.0] — 2026-03-19
+
+### Changed
+- **Трёхуровневый Close** — Session Close (13 шагов) заменён на Quick Close (6 шагов, ~3 мин) + Day Close (13 шагов, ~10 мин) + Week Close (3 шага). Governance перенесён с сессии на конец дня. Экономия ~60% токенов на закрытие сессий
+- **Haiku R23** — верификация только при Day Close (≥10 пунктов), не Quick Close (6 пунктов). Экономия N-1 вызовов sub-agent в день
+- **MEMORY.md ≤100 строк** — done-РП удаляются при Day Close (были ≤200, копились). Экономия ~30% токенов на авто-загрузку
+- **CHANGELOG FMT** перенесён из Day Close в Quick Close (шаг 1b) — пока контекст свежий, не теряется к вечеру
+
+### Added
+- **[scripts/day-close.sh](scripts/day-close.sh)** — автоматизация 3 механических шагов Day Close одной командой: backup memory/ → exocortex/, knowledge-mcp reindex (автодетекция изменённых Pack/DS), Linear sync
+- **Мультипликатор IWE** — шаг 5 Day Close: расчёт усиления от агента-экзоскелета (Бюджет закрыт / WakaTime). Таблица в итогах дня
+- **Week Close** — ротация уроков (≤15 актуальных), свежая таблица РП, аудит memory-файлов
+
+## [0.9.1] — 2026-03-18
+
+### Added
+- **Close Gate hook** — `close-gate-reminder.sh`: при триггерах закрытия инжектит compact-чеклист Session Close (10 шагов) или направляет на полный Day Close. Экономия ~5K токенов (не перечитывает protocol-close.md каждый раз)
+
+## [0.9.0] — 2026-03-18
+
+### Added
+- **Hooks enforcement** — три автоматических hook'а для надёжности агента: WP Gate (напоминание на каждый prompt), Protocol Completion (верификация после загрузки протокола), PreCompact Checkpoint (сохранение контекста перед компрессией). `.claude/hooks/` + `.claude/settings.json`
+- **Скилл `/run-protocol`** — пошаговое выполнение протокола ОРЗ через TodoWrite с обязательной верификацией. `.claude/skills/run-protocol/`
+- **Различение `settings.json` ≠ `settings.local.json`** — проектный (hooks, в git) vs персональный (permissions, gitignored). При клонировании hooks работают из коробки
+- **Compliance-метрика верификации** — строка «запускался ли /verify» в чеклисте Session Close
+
+## [0.8.8] — 2026-03-18
+
+### Added
+- **Google Calendar одной командой** — `bash setup/optional/setup-calendar.sh`: скачивает OAuth credentials с Gist, настраивает MCP, запускает авторизацию в браузере. Пользователю не нужен GCP Console (АрхГейт 61/70, Shared OAuth App)
+- **[SETUP-GUIDE](docs/SETUP-GUIDE.md) Этап 5** обновлён: `setup-calendar.sh` вместо ручной настройки GCP
+
 ## [0.8.7] — 2026-03-17
 
 ### Added
@@ -15,7 +197,7 @@ Versioning: [Semantic Versioning](https://semver.org/).
 ### Added
 - **Роли верификации (R23-R24)** — skill /verify + [hard-distinctions](memory/hard-distinctions.md) #38-40 (WP-122)
 - **Governance-синхронизация** в [Day Close](memory/protocol-close.md) — проверка REPOSITORY-REGISTRY, navigation.md, MAP.002↔PROCESSES.md (WP-124)
-- **Collapsible sections** в [LEARNING-PATH](LEARNING-PATH.md) и [SETUP-GUIDE](SETUP-GUIDE.md) (details/summary)
+- **Collapsible sections** в [LEARNING-PATH](docs/LEARNING-PATH.md) и [SETUP-GUIDE](docs/SETUP-GUIDE.md) (details/summary)
 - **Онбординг** переработан: пользователь в центре, принципы двусторонние
 
 ## [0.8.5] — 2026-03-17
@@ -37,7 +219,7 @@ Versioning: [Semantic Versioning](https://semver.org/).
 ## [0.8.3] — 2026-03-17
 
 ### Added
-- **[LEARNING-PATH.md](LEARNING-PATH.md) §11** — FAQ: cross-device workflow (ноут + десктоп, кросс-ОС)
+- **[LEARNING-PATH.md](docs/LEARNING-PATH.md) §11** — FAQ: cross-device workflow (ноут + десктоп, кросс-ОС)
 
 ## [0.8.2] — 2026-03-17
 
@@ -46,8 +228,8 @@ Versioning: [Semantic Versioning](https://semver.org/).
 - **[protocol-open.md](memory/protocol-open.md)** — два сценария переключения модели:
   - Сценарий A: вся сессия — Claude рекомендует `/model`, пользователь переключает
   - Сценарий B: отдельная задача внутри сессии — делегирование sub-agent'у (только вниз)
-- **[SETUP-GUIDE.md](SETUP-GUIDE.md) §0.5b** — класс верификации в таблице моделей + описание двух сценариев
-- **[LEARNING-PATH.md](LEARNING-PATH.md) §5.1b** — trivial в таблице классов + два сценария переключения
+- **[SETUP-GUIDE.md](docs/SETUP-GUIDE.md) §0.5b** — класс верификации в таблице моделей + описание двух сценариев
+- **[LEARNING-PATH.md](docs/LEARNING-PATH.md) §5.1b** — trivial в таблице классов + два сценария переключения
 
 ## [0.8.1] — 2026-03-16
 
