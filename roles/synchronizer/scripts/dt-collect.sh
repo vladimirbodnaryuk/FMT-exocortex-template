@@ -376,8 +376,8 @@ print(json.dumps(result))
 # ============================================================
 
 collect_multiplier() {
-    local DAYPLAN_DIR="$WORKSPACE/DS-my-strategy/current"
-    local ARCHIVE_DIR="$WORKSPACE/DS-my-strategy/archive/day-plans"
+    local DAYPLAN_DIR="$WORKSPACE/DS-strategy/current"
+    local ARCHIVE_DIR="$WORKSPACE/DS-strategy/archive/day-plans"
 
     python3 -c "
 import json, os, re, glob
@@ -499,7 +499,7 @@ print(json.dumps(result))
 # ============================================================
 
 collect_registry() {
-    local REGISTRY="$WORKSPACE/DS-my-strategy/docs/WP-REGISTRY.md"
+    local REGISTRY="$WORKSPACE/DS-strategy/docs/WP-REGISTRY.md"
 
     python3 -c "
 import json, os, re
@@ -579,7 +579,7 @@ print(json.dumps(result))
 # ============================================================
 
 collect_notes() {
-    local NOTES="$WORKSPACE/DS-my-strategy/inbox/fleeting-notes.md"
+    local NOTES="$WORKSPACE/DS-strategy/inbox/fleeting-notes.md"
 
     python3 -c "
 import json, os, re

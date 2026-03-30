@@ -51,7 +51,8 @@
       "Bash(brew install:*)",
       "Bash(pdftotext /Users/admin/GIT/DS-PLH/docs/Племхоз-02.pdf /tmp/plemhoz02.txt)",
       "Read(//tmp/**)",
-      "Bash(pdftotext /Users/admin/GIT/DS-PLH/docs/Племхоз-01.pdf /tmp/plemhoz01.txt)"
+      "Bash(pdftotext /Users/admin/GIT/DS-PLH/docs/Племхоз-01.pdf /tmp/plemhoz01.txt)",
+      "Bash(grep -rn \"Александр Михайлович\\\\|Александра Михайловича\\\\|Александру Михайловичу\" /Users/admin/GIT/DS-ABF /Users/admin/GIT/DS-strategy /Users/admin/GIT/DS-PLH --include=*.md)"
     ]
   },
   "mcpServers": {

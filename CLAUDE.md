@@ -104,7 +104,7 @@
 
 ### Именование
 
-- `DS-strategy` (не `DS-strategy`) — личный governance-хаб
+- `DS-strategy` (не `DS-my-strategy`) — личный governance-хаб
 - `{{WORKSPACE_DIR}}/` — рабочая директория
 
 ### Read-only репо

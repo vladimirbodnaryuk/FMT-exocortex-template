@@ -1,4 +1,6 @@
 DS-exocortex-setup/
+FPF
+.DS_Store
 
 # Claude Code — персональные файлы (не входят в шаблон)
 .claude/settings.local.json
