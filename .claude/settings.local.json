@@ -41,13 +41,27 @@
       "Bash(git clone:*)",
       "Bash(bash update.sh --dry-run)",
       "Bash(bash update.sh)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Read(//Users/admin/GIT/DS-strategy/current/**)",
+      "Read(//Users/admin/GIT/DS-strategy/inbox/**)",
+      "Bash(python3 -m json.tool)",
+      "WebFetch(domain:knowledge-mcp.aisystant.workers.dev)",
+      "Bash(ln -sf /Users/admin/GIT/FPF /Users/admin/GIT/FMT-exocortex-template/FPF)",
+      "Bash(pdftotext /Users/admin/GIT/DS-PLH/docs/Племхоз-02.pdf -)",
+      "Bash(brew install:*)",
+      "Bash(pdftotext /Users/admin/GIT/DS-PLH/docs/Племхоз-02.pdf /tmp/plemhoz02.txt)",
+      "Read(//tmp/**)",
+      "Bash(pdftotext /Users/admin/GIT/DS-PLH/docs/Племхоз-01.pdf /tmp/plemhoz01.txt)"
     ]
   },
   "mcpServers": {
     "knowledge-mcp": {
-      "type": "url",
-      "url": "https://knowledge-mcp.aisystant.workers.dev/mcp"
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://knowledge-mcp.aisystant.workers.dev/mcp"
+      ]
     },
     "ddt": {
       "type": "url",
