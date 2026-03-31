@@ -1,7 +1,7 @@
 ---
 wp: 8
 title: FMT-exocortex + PACK-IWE — доработка IWE-метода
-status: in_progress
+status: done
 created: 2026-03-31
 verification_class: open-loop
 ---
