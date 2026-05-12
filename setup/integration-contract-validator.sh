@@ -221,8 +221,8 @@ else
 fi
 log ""
 
-# === Detector 7: prompts + python coverage (R6.1* regression — мой smoke test пропустил) ===
-log "[7/8] prompts_python_coverage — нет hardcoded DS-strategy в prompts и .py..."
+# === Detector 7: prompts + python + shell coverage (R6.1* regression — мой smoke test пропустил) ===
+log "[7/8] prompts_python_shell_coverage — нет hardcoded DS-strategy в prompts/.py/.sh..."
 COVERAGE_VIOLATIONS=0
 # Python scripts: должны читать GOVERNANCE_REPO из env, не хардкодить
 while IFS= read -r py; do
@@ -236,6 +236,32 @@ while IFS= read -r py; do
         fi
     fi
 done < <(find roles -name '*.py' -type f 2>/dev/null)
+
+# Shell scripts (12 мая, WP-291 follow-up): дополнение к Python-проверке.
+# Bug 1 (b24639f) — в dt-collect.sh:238 был hardcode /DS-strategy/ который detector
+# не ловил, потому что .sh файлы не сканировались. SESSION_LOG="$WORKSPACE/DS-strategy/..."
+# игнорировал параметризованный $GOVERNANCE_DIR на line 34.
+#
+# Scope: roles/ + scripts/. Whitelist parameter-expansion fallback и комментарии.
+while IFS= read -r sh; do
+    [ -f "$sh" ] || continue
+    # Antipattern: `/DS-strategy/` или `"DS-strategy"` literal без use $GOVERNANCE_DIR
+    if grep -qE '"DS-strategy"|/DS-strategy[/"]' "$sh" 2>/dev/null; then
+        # Допустимо если читает GOVERNANCE_REPO из env (значит fallback default — паттерн Python detector выше)
+        if grep -qE 'IWE_GOVERNANCE_REPO|GOVERNANCE_REPO' "$sh" 2>/dev/null; then
+            continue
+        fi
+        # Фильтр fallback `${VAR:-...DS-strategy...}` (`:-` должен быть внутри parameter-expansion с DS-strategy)
+        # и комментариев (строка вида `path:NN:   # ...`).
+        HITS=$(grep -nE '"DS-strategy"|/DS-strategy[/"]' "$sh" 2>/dev/null \
+            | grep -vE '\$\{[^}]*:-[^}]*DS-strategy|^[^:]+:[[:space:]]*#' || true)
+        if [ -n "$HITS" ]; then
+            log "  ⚠ $sh: hardcoded DS-strategy без \$GOVERNANCE_DIR / GOVERNANCE_REPO env:"
+            echo "$HITS" | while IFS= read -r line; do log "      $line"; done
+            COVERAGE_VIOLATIONS=$((COVERAGE_VIOLATIONS + 1))
+        fi
+    fi
+done < <(find roles scripts -name '*.sh' -type f 2>/dev/null)
 
 # Prompts: не должны иметь bare DS-strategy/, должны использовать {{GOVERNANCE_REPO}}
 while IFS= read -r prompt; do
@@ -253,7 +279,7 @@ done < <(find roles -name 'prompts' -type d 2>/dev/null | xargs -I{} find {} -na
 if [ "$COVERAGE_VIOLATIONS" -eq 0 ]; then
     log "  ✅ PASS"
 else
-    log "  ❌ FAIL ($COVERAGE_VIOLATIONS prompts/.py с hardcoded DS-strategy)"
+    log "  ❌ FAIL ($COVERAGE_VIOLATIONS prompts/.py/.sh с hardcoded DS-strategy)"
     VIOLATIONS=$((VIOLATIONS + COVERAGE_VIOLATIONS))
 fi
 log ""

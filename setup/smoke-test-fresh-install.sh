@@ -29,6 +29,11 @@ set -eu
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 TEMPLATE_DIR="$(dirname "$SCRIPT_DIR")"
 TEST_WS="${SMOKE_WORKSPACE:-/tmp/iwe-smoke-test-$$}"
+# Базовое значение GOVERNANCE_REPO для Test 1-5. Test 6a остаётся жёстко на
+# DS-pilot-strategy (тестирует переключение). Параметр позволяет matrix-CI
+# гонять весь smoke с разными значениями: DS-strategy (legacy default),
+# DS-pilot-strategy и пр. Закрывает gap «hardcode виден только при non-default».
+SMOKE_GOVERNANCE_REPO="${SMOKE_GOVERNANCE_REPO:-DS-strategy}"
 
 # Cleanup при exit
 cleanup() {
@@ -50,6 +55,7 @@ echo "  Smoke Test: Fresh Install (WP-273 F)"
 echo "=========================================="
 echo "  Template: $TEMPLATE_DIR"
 echo "  Test workspace: $TEST_WS"
+echo "  GOVERNANCE_REPO: $SMOKE_GOVERNANCE_REPO"
 echo ""
 
 # === Setup test workspace ===
@@ -62,7 +68,7 @@ CLAUDE_PROJECT_SLUG=smoke-test
 TIMEZONE_HOUR=4
 TIMEZONE_DESC=4:00 UTC
 HOME_DIR=$TEST_WS
-GOVERNANCE_REPO=DS-strategy
+GOVERNANCE_REPO=$SMOKE_GOVERNANCE_REPO
 IWE_TEMPLATE=$TEMPLATE_DIR
 IWE_RUNTIME=$TEST_WS/.iwe-runtime
 EOF
